@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>МАК-колоды — NeuroVISIO</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--black:#080810;--dark:#1A0D2E;--gold:#C9960A;--gold2:#FFD700;--pink:#E8006F;--blue:#00B4D8;--lilac:#B47FD8;--white:#FFFFFF;--gray:#AAAAAA;--gold-grad:linear-gradient(135deg,#C9960A,#FFD700,#C9960A)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--lilac)}
+.gold-text{background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+@keyframes btn-color-flow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes btn-shine{0%{left:-90%}60%{left:120%}100%{left:120%}}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:12px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,16,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(180,127,216,0.2)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{height:42px}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.2}
+.nav-logo-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.06em}
+.nav-logo-desc{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(180,127,216,0.85)}
+.nav-back{color:var(--lilac);text-decoration:none;font-size:13px;font-weight:500;transition:color 0.3s}
+.nav-back:hover{color:var(--gold)}
+.nav-tg{display:flex;align-items:center;gap:6px;padding:9px 18px;background:linear-gradient(270deg,#C9960A,#FFD700,#fff176,#FFD700,#C9960A);background-size:300%;color:var(--black);text-decoration:none;font-size:13px;font-weight:700;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px));animation:btn-color-flow 3s ease infinite;position:relative;overflow:hidden;transition:box-shadow 0.3s}
+.nav-tg:hover{animation:none;background:var(--gold-grad);box-shadow:0 0 25px rgba(255,215,0,0.5)}
+.nav-tg svg{width:14px;height:14px}
+.page-hero{padding:110px 40px 44px;text-align:center;position:relative;overflow:hidden}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(180,127,216,0.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.sparkle{position:absolute;width:3px;height:3px;background:var(--gold2);border-radius:50%;animation:twinkle 3s infinite}
+.page-hero-content{position:relative;z-index:1;max-width:700px;margin:0 auto}
+.page-eyebrow{font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--lilac);margin-bottom:14px;font-weight:500}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,46px);font-weight:700;line-height:1.15;margin-bottom:12px}
+.page-subtitle{font-size:13px;color:var(--gray);font-style:italic;line-height:1.6;font-weight:300}
+.intro-bar{padding:20px 40px 32px;max-width:1300px;margin:0 auto}
+.intro-inner{background:rgba(180,127,216,0.07);border-left:4px solid var(--lilac);padding:20px 28px;border-radius:0 8px 8px 0;display:flex;flex-direction:column;gap:14px}
+.compare-box{background:rgba(201,150,10,0.07);border:1px solid rgba(201,150,10,0.3);border-radius:6px;padding:14px 18px;font-size:13px;color:var(--white);line-height:1.6}
+.compare-box strong{color:var(--gold)}
+.intro-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.intro-text{font-size:13px;color:var(--gray);line-height:1.7;font-weight:300;flex:1;min-width:240px}
+.gift-tag{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;background:rgba(201,150,10,0.1);border:1px solid rgba(201,150,10,0.35);border-radius:6px;font-size:12px;font-weight:600;color:var(--gold);white-space:nowrap}
+.formats-wrap{padding:0 32px 56px;max-width:1300px;margin:0 auto}
+.formats-ttl{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;margin-bottom:24px;text-align:center}
+.formats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.fc{background:var(--dark);border:1px solid rgba(180,127,216,0.2);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.3s,box-shadow 0.3s,transform 0.3s}
+.fc:hover{border-color:rgba(180,127,216,0.5);box-shadow:0 0 22px rgba(180,127,216,0.12);transform:translateY(-3px)}
+.sw{position:relative;overflow:hidden;width:100%;padding-top:100%}
+.st{position:absolute;top:0;left:0;display:flex;height:100%;transition:transform 0.4s ease}
+.sl{flex:0 0 100%;height:100%}
+.sl img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.sb{position:absolute;top:50%;transform:translateY(-50%);width:26px;height:26px;background:rgba(8,8,16,0.78);border:1px solid rgba(180,127,216,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--lilac);font-size:13px;z-index:2;user-select:none;line-height:1;transition:background 0.2s}
+.sb:hover{background:rgba(180,127,216,0.2)}
+.sp{left:7px}.sn{right:7px}
+.sd{position:absolute;bottom:6px;left:0;right:0;display:flex;justify-content:center;gap:4px;z-index:2}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(180,127,216,0.3);cursor:pointer;transition:background 0.3s}
+.dot.active{background:var(--lilac)}
+.cb{padding:14px;display:flex;flex-direction:column;gap:9px;flex:1}
+.ch{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.ftag{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:var(--lilac);padding:3px 7px;border:1px solid rgba(180,127,216,0.35);border-radius:3px}
+.ftag-gold{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:var(--gold2);padding:3px 7px;border:1px solid rgba(255,215,0,0.4);border-radius:3px}
+.fbadge{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;color:var(--black);background:var(--gold-grad);padding:3px 7px;border-radius:3px}
+.ct{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;line-height:1.3}
+.incl{list-style:none;display:flex;flex-direction:column;gap:3px;flex:1}
+.incl li{display:flex;align-items:flex-start;gap:5px;font-size:11.5px;color:var(--gray);line-height:1.4}
+.ii{color:var(--lilac);flex-shrink:0;font-size:9px;margin-top:2px}
+.mr{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:9px 10px;background:rgba(8,8,16,0.55);border-radius:6px}
+.mi{text-align:center}
+.ml{font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray);margin-bottom:3px;display:block}
+.mv{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;display:block}
+.mv.g{background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.mg{font-size:10.5px;color:var(--lilac);font-style:italic;text-align:center;padding:0 2px;line-height:1.3}
+.bo{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:linear-gradient(270deg,#C9960A,#FFD700,#fff176,#FFD700,#C9960A);background-size:300%;color:var(--black);font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;text-decoration:none;clip-path:polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px));animation:btn-color-flow 3s ease infinite;position:relative;overflow:hidden;transition:box-shadow 0.3s}
+.bo:hover{animation:none;background:var(--gold-grad);box-shadow:0 0 28px rgba(255,215,0,0.6)}
+.bo svg{width:13px;height:13px;flex-shrink:0}
+.pb{padding:36px 32px 52px;max-width:1300px;margin:0 auto}
+.sd-div{display:flex;align-items:center;justify-content:center;gap:16px;padding:8px 0}
+.sd-div::before,.sd-div::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.bg{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.bb{background:var(--dark);border:1px solid rgba(201,150,10,0.2);border-radius:8px;padding:18px 20px}
+.bb h4{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.bb li{padding:4px 0;font-size:12.5px;color:var(--gray);border-bottom:1px solid rgba(255,255,255,0.05);line-height:1.5;list-style:none}
+.bb li:last-child{border-bottom:none}
+.rights-note{text-align:center;padding:14px 16px;background:rgba(180,127,216,0.05);border:1px solid rgba(180,127,216,0.2);border-radius:6px;font-size:12px;color:var(--lilac);margin-top:14px}
+footer{background:var(--black);border-top:1px solid rgba(201,150,10,0.15);padding:22px 40px;text-align:center}
+.fp{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px}
+.fade-up{opacity:0;transform:translateY(20px);transition:opacity 0.7s,transform 0.7s}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+@media(max-width:1100px){.formats-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){nav{padding:10px 16px}.page-hero{padding:80px 16px 30px}.intro-bar{padding:16px 16px 24px}.formats-wrap{padding:0 14px 40px}.formats-grid{grid-template-columns:1fr}.pb{padding:28px 16px 40px}.bg{grid-template-columns:1fr}footer{padding:18px 16px}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="images/logo.png" alt="NeuroVISIO">
+    <div class="nav-logo-text"><span class="nav-logo-name">NeuroVISIO</span><span class="nav-logo-desc">образы с душой</span></div>
+  </a>
+  <a href="index.html" class="nav-back">← Главная</a>
+  <a href="https://t.me/GusevaIrinaV" target="_blank" class="nav-tg">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+    Заказать
+  </a>
+</nav>
+<section class="page-hero">
+  <div class="hero-glow"></div>
+  <div class="sparkles" id="sparkles"></div>
+  <div class="page-hero-content fade-up">
+    <p class="page-eyebrow">🃏 МАК-колоды для психологов</p>
+    <h1 class="page-title">У тысяч психологов — одни и те же колоды. У тебя будет <span class="gold-text">своя</span>.</h1>
+    <p class="page-subtitle">Для психологов, коучей и игропрактиков</p>
+  </div>
+</section>
+<div class="intro-bar fade-up">
+  <div class="intro-inner">
+    <div class="compare-box">Авторская колода у классического иллюстратора: <strong>50 000–150 000 ₽ и 3–6 месяцев</strong>. У меня: <strong>от 8 000 ₽ и 10 дней</strong>. Единственный специалист, который понимает МАК изнутри и создаёт с AI.</div>
+    <div class="intro-row">
+      <p class="intro-text">Я знаю, как МАК-карта работает в сессии. Понимаю принципы разнообразия образов, эмоционального диапазона, баланса сцен — без этого получится непригодная для работы колода. Не просто красивые картинки — инструменты, которые работают.</p>
+      <div class="gift-tag">🎁 К каждой колоде — мини-презентация PDF</div>
+    </div>
+  </div>
+</div>
+<div class="formats-wrap">
+  <h2 class="formats-ttl fade-up">Форматы <span class="gold-text">МАК-колод</span></h2>
+  <div class="formats-grid">
+
+    <div class="fc fade-up">
+      <div class="sw" data-s>
+        <div class="st">
+          <div class="sl"><img src="images/5332408709705496521.jpg" alt=""></div>
+          <div class="sl"><img src="images/5339553903198467322.jpg" alt=""></div>
+          <div class="sl"><img src="images/5260504184010773176.jpg" alt=""></div>
+        </div>
+        <button class="sb sp" onclick="sl(this,-1)">‹</button>
+        <button class="sb sn" onclick="sl(this,1)">›</button>
+        <div class="sd"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="cb">
+        <div class="ch"><span class="ftag">ЦИФРОВАЯ</span><span style="font-size:11px;color:var(--gray)">30 карт · PDF</span></div>
+        <p class="ct">Готовая к работе цифровая колода</p>
+        <ul class="incl">
+          <li><span class="ii">✦</span>30 карт в авторском стиле</li>
+          <li><span class="ii">✦</span>Тема на выбор: ресурс / тревога / отношения</li>
+          <li><span class="ii">✦</span>PDF готово к самостоятельной печати</li>
+          <li><span class="ii">✦</span>2 раунда правок</li>
+        </ul>
+        <div class="mr">
+          <div class="mi"><span class="ml">⏱ Срок</span><span class="mv">10 дней</span></div>
+          <div class="mi"><span class="ml">💰 Цена</span><span class="mv g">8 000 ₽</span></div>
+        </div>
+        <div class="mg">🎁 Мини-презентация авторской колоды PDF</div>
+        <a href="https://t.me/GusevaIrinaV" target="_blank" class="bo">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+          Заказать
+        </a>
+      </div>
+    </div>
+
+    <div class="fc fade-up">
+      <div class="sw" data-s>
+        <div class="st">
+          <div class="sl"><img src="images/5336826289727864044.jpg" alt=""></div>
+          <div class="sl"><img src="images/5390916910285193249.jpg" alt=""></div>
+          <div class="sl"><img src="images/5195019251436619236.jpg" alt=""></div>
+          <div class="sl"><img src="images/5296279754052932876.jpg" alt=""></div>
+        </div>
+        <button class="sb sp" onclick="sl(this,-1)">‹</button>
+        <button class="sb sn" onclick="sl(this,1)">›</button>
+        <div class="sd"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="cb">
+        <div class="ch"><span class="ftag">АВТОРСКАЯ</span><span class="fbadge">✦ ХИТ</span></div>
+        <p class="ct">Твоя колода — инструмент и визитка</p>
+        <ul class="incl">
+          <li><span class="ii">✦</span>45–60 карт с полным эмоц. диапазоном</li>
+          <li><span class="ii">✦</span>Уникальный художественный стиль</li>
+          <li><span class="ii">✦</span>Цифра + готово к печати + инструкция</li>
+          <li><span class="ii">✦</span>3 раунда правок</li>
+        </ul>
+        <div class="mr">
+          <div class="mi"><span class="ml">⏱ Срок</span><span class="mv">14 дней</span></div>
+          <div class="mi"><span class="ml">💰 Цена</span><span class="mv g">18 000–25 000 ₽</span></div>
+        </div>
+        <div class="mg">🎁 Мини-презентация авторской колоды PDF</div>
+        <a href="https://t.me/GusevaIrinaV" target="_blank" class="bo">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+          Заказать
+        </a>
+      </div>
+    </div>
+
+    <div class="fc fade-up">
+      <div class="sw" data-s>
+        <div class="st">
+          <div class="sl"><img src="images/5332286084094227681.jpg" alt=""></div>
+          <div class="sl"><img src="images/5417848283675168699.jpg" alt=""></div>
+          <div class="sl"><img src="images/5390916910285193249.jpg" alt=""></div>
+        </div>
+        <button class="sb sp" onclick="sl(this,-1)">‹</button>
+        <button class="sb sn" onclick="sl(this,1)">›</button>
+        <div class="sd"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="cb">
+        <div class="ch"><span class="ftag-gold">ПРЕМИУМ</span><span style="font-size:11px;color:var(--gray)">60+ карт</span></div>
+        <p class="ct">Колода — твой продукт для продажи</p>
+        <ul class="incl">
+          <li><span class="ii">✦</span>60+ карт: основные + метафорические</li>
+          <li><span class="ii">✦</span>Разработка концепции с нуля</li>
+          <li><span class="ii">✦</span>Полный пакет: цифра + печать + упаковка</li>
+          <li><span class="ii">✦</span>Правки без ограничений</li>
+        </ul>
+        <div class="mr">
+          <div class="mi"><span class="ml">⏱ Срок</span><span class="mv">21 день</span></div>
+          <div class="mi"><span class="ml">💰 Цена</span><span class="mv g">35 000–40 000 ₽</span></div>
+        </div>
+        <div class="mg">🎁 Мини-презентация авторской колоды PDF</div>
+        <a href="https://t.me/GusevaIrinaV" target="_blank" class="bo">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+          Заказать
+        </a>
+      </div>
+    </div>
+
+    <div class="fc fade-up">
+      <div class="sw" data-s>
+        <div class="st">
+          <div class="sl"><img src="images/5332408709705496521.jpg" alt=""></div>
+          <div class="sl"><img src="images/5339553903198467322.jpg" alt=""></div>
+          <div class="sl"><img src="images/5260504184010773176.jpg" alt=""></div>
+        </div>
+        <button class="sb sp" onclick="sl(this,-1)">‹</button>
+        <button class="sb sn" onclick="sl(this,1)">›</button>
+        <div class="sd"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="cb">
+        <div class="ch"><span class="ftag">МИНИ-КОЛОДА</span><span style="font-size:11px;color:var(--gray)">15–20 карт</span></div>
+        <p class="ct">Быстрый инструмент для конкретной практики</p>
+        <ul class="incl">
+          <li><span class="ii">✦</span>15–20 карт на узкую тему</li>
+          <li><span class="ii">✦</span>Детско-родительские / сепарация / сны</li>
+          <li><span class="ii">✦</span>Быстрый старт</li>
+          <li><span class="ii">✦</span>2 правки</li>
+        </ul>
+        <div class="mr">
+          <div class="mi"><span class="ml">⏱ Срок</span><span class="mv">7 дней</span></div>
+          <div class="mi"><span class="ml">💰 Цена</span><span class="mv g">6 500 ₽</span></div>
+        </div>
+        <div class="mg">🎁 Мини-презентация авторской колоды PDF</div>
+        <a href="https://t.me/GusevaIrinaV" target="_blank" class="bo">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+          Заказать
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="pb fade-up">
+  <div class="sd-div"><span style="color:var(--gold)">✦</span></div>
+  <div class="bg">
+    <div class="bb"><h4>Как заказать</h4><ul><li>1. Нажми кнопку → Telegram</li><li>2. Расскажи о теме практики</li><li>3. Заполни бриф (10 мин) и приступаем</li></ul></div>
+    <div class="bb"><h4>Важно знать</h4><ul><li>✓ Предоплата 50% при старте</li><li>✓ Файлы PNG + PDF для печати</li><li>✓ Правки только в рамках брифа</li><li>✓ Срочный заказ +50% к стоимости</li></ul></div>
+  </div>
+  <div class="rights-note">✦ Все МАК-колоды передаются с полными правами. Ты можешь продавать свою колоду как авторский продукт. ✦</div>
+</div>
+<footer><p class="fp"><span class="gold-text">«Создаю образы, которые видят тебя, создают тебя»</span></p></footer>
+<script>
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:0.06});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+function sl(btn,dir){const w=btn.closest('[data-s]');const t=w.querySelector('.st');const items=t.querySelectorAll('.sl');const dots=w.querySelectorAll('.dot');let c=parseInt(t.dataset.c||0);c=(c+dir+items.length)%items.length;t.dataset.c=c;t.style.transform=`translateX(-${c*100}%)`;dots.forEach((d,i)=>d.classList.toggle('active',i===c));}
+document.querySelectorAll('[data-s]').forEach(w=>{setInterval(()=>{const b=w.querySelector('.sn');if(b)sl(b,1)},4000+Math.random()*2000);w.querySelectorAll('.dot').forEach((d,i)=>{d.addEventListener('click',()=>{const t=w.querySelector('.st');t.dataset.c=i;t.style.transform=`translateX(-${i*100}%)`;w.querySelectorAll('.dot').forEach((x,j)=>x.classList.toggle('active',j===i));});});});
+// Gold sparkles
+const sc=document.getElementById('sparkles');
+for(let i=0;i<18;i++){const s=document.createElement('div');s.className='sparkle';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=Math.random()*4+'s';s.style.animationDuration=(2+Math.random()*3)+'s';sc.appendChild(s);}
+</script>
+</body>
+</html>

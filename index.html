@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuroVISIO — образы с душой</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0A0A12;
+  --dark: #1A0D2E;
+  --gold: #C9960A;
+  --gold2: #FFD700;
+  --pink: #E8006F;
+  --blue: #00B4D8;
+  --lilac: #B47FD8;
+  --white: #FFFFFF;
+  --gray: #AAAAAA;
+  --gold-grad: linear-gradient(135deg, #C9960A, #FFD700, #C9960A);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ─── UTILITY ─── */
+.gold-text {
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gold-glow { text-shadow: 0 0 30px rgba(255,215,0,0.3); }
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 8px 0;
+}
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.divider-icon { color: var(--gold); font-size: 14px; }
+
+/* ─── NAVIGATION ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 16px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10,10,18,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(201,150,10,0.2);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+.nav-logo img {
+  height: 56px;
+  width: auto;
+}
+.nav-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.nav-logo-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #C9960A, #FFD700, #C9960A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.08em;
+}
+.nav-logo-desc {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(180, 127, 216, 0.9);
+  font-weight: 400;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--gray);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--gold-grad);
+  color: var(--black) !important;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: none;
+  transition: box-shadow 0.3s;
+}
+.nav-cta:hover { box-shadow: 0 0 20px rgba(255,215,0,0.4); }
+
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+}
+.burger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--gold);
+  transition: all 0.3s;
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 100px 40px 60px;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: var(--black);
+}
+
+.hero-glow-1 {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,79,216,0.12) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-20%, -50%);
+  pointer-events: none;
+}
+.hero-glow-2 {
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,0,111,0.08) 0%, transparent 70%);
+  bottom: 10%; left: 5%;
+  pointer-events: none;
+}
+
+/* Orbits SVG background */
+.orbits-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+/* Gold pixels canvas */
+#goldPixels {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 55% 45%;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  align-items: center;
+}
+
+.hero-left { }
+
+.hero-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(38px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: 15px;
+  color: var(--gray);
+  line-height: 1.6;
+  margin-bottom: 36px;
+  font-weight: 300;
+}
+
+.hero-pictos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+.hero-picto {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--blue);
+  letter-spacing: 0.05em;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--gold-grad);
+  color: var(--black);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  transition: box-shadow 0.3s, transform 0.2s;
+}
+.btn-gold:hover {
+  box-shadow: 0 0 30px rgba(255,215,0,0.5);
+  transform: translateY(-2px);
+}
+
+.btn-tg {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--blue);
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.3s;
+  font-weight: 500;
+}
+.btn-tg:hover { color: var(--gold); }
+.btn-tg svg { width: 18px; height: 18px; }
+
+/* ─── HERO RIGHT — Photo with orbits ─── */
+.hero-right {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-photo-wrap {
+  position: relative;
+  width: 420px;
+  height: 520px;
+}
+
+.hero-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 4px;
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.orbit-svg {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 110%;
+  height: 110%;
+  pointer-events: none;
+}
+
+.gold-particles {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 200px;
+  background: linear-gradient(to top, var(--black) 20%, transparent);
+  pointer-events: none;
+}
+
+/* ─── WHO AM I ─── */
+.who {
+  padding: 100px 40px;
+  background: var(--dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.who::before {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,79,216,0.1) 0%, transparent 70%);
+  top: 0; left: -100px;
+  pointer-events: none;
+}
+
+.who-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.who-photo-wrap {
+  position: relative;
+}
+
+.who-photo {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 40px rgba(201,150,10,0.3), inset 0 0 40px rgba(0,0,0,0.5);
+}
+
+.who-photo-ring {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,150,10,0.3);
+}
+.who-photo-ring2 {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,150,10,0.15);
+}
+
+.who-right { }
+
+.section-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 24px;
+}
+
+.who-text {
+  font-size: 15px;
+  color: var(--gray);
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+
+.who-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(10,10,18,0.8);
+  border: 1px solid rgba(201,150,10,0.4);
+  border-radius: 100px;
+  font-size: 13px;
+  color: var(--blue);
+  font-weight: 500;
+}
+.pill .pill-icon { color: var(--pink); }
+
+.who-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-style: italic;
+  padding-left: 24px;
+  border-left: 3px solid var(--gold);
+  line-height: 1.4;
+}
+
+/* ─── PRODUCTS ─── */
+.products {
+  padding: 100px 40px;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+
+.products::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='80' fill='none' stroke='rgba(201,150,10,0.04)' stroke-width='1'/%3E%3Ccircle cx='100' cy='100' r='55' fill='none' stroke='rgba(201,150,10,0.04)' stroke-width='1'/%3E%3Cline x1='40' y1='100' x2='160' y2='100' stroke='rgba(201,150,10,0.04)' stroke-width='1'/%3E%3Cline x1='100' y1='40' x2='100' y2='160' stroke='rgba(201,150,10,0.04)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 200px;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.section-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 60px;
+}
+
+.section-header .section-title { margin-bottom: 12px; }
+
+.section-sub {
+  font-size: 14px;
+  color: var(--gray);
+  font-style: italic;
+  font-weight: 300;
+}
+
+.products-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.product-card {
+  background: var(--dark);
+  border: 1px solid rgba(201,150,10,0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+.product-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 30px rgba(201,150,10,0.2);
+  transform: translateY(-4px);
+}
+
+.card-image {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.card-body { padding: 24px; }
+
+.card-tag {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid;
+}
+.tag-blue { color: var(--blue); border-color: var(--blue); }
+.tag-pink { color: var(--pink); border-color: var(--pink); }
+.tag-lilac { color: var(--lilac); border-color: var(--lilac); }
+
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.card-quote {
+  font-size: 13px;
+  color: var(--gray);
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+  background: transparent;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+.btn-outline:hover {
+  background: var(--gold-grad);
+  color: var(--black);
+  box-shadow: 0 0 20px rgba(255,215,0,0.3);
+}
+
+/* ─── CTA ─── */
+.cta-section {
+  padding: 120px 40px;
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.cta-atom {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 600px;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.cta-glow {
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,150,10,0.12) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.cta-sub {
+  font-size: 15px;
+  color: var(--gray);
+  font-style: italic;
+  font-weight: 300;
+  margin-bottom: 48px;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.btn-pink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: var(--pink);
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  transition: box-shadow 0.3s;
+}
+.btn-pink:hover { box-shadow: 0 0 25px rgba(232,0,111,0.5); }
+
+.btn-blue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: var(--blue);
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  transition: box-shadow 0.3s;
+}
+.btn-blue:hover { box-shadow: 0 0 25px rgba(0,180,216,0.5); }
+
+.cta-micro {
+  font-size: 13px;
+  color: var(--gray);
+}
+.cta-micro a {
+  color: var(--blue);
+  text-decoration: none;
+}
+.cta-micro a:hover { color: var(--gold); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--black);
+  border-top: 1px solid rgba(201,150,10,0.2);
+  padding: 60px 40px 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.footer-watermark img {
+  width: 60%;
+  opacity: 0.04;
+  filter: grayscale(1);
+}
+
+.footer-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+
+.footer-brand img { height: 50px; margin-bottom: 12px; }
+.footer-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.footer-copy { font-size: 12px; color: #555; }
+
+.footer-nav h4 {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 16px;
+}
+.footer-nav ul { list-style: none; }
+.footer-nav li { margin-bottom: 10px; }
+.footer-nav a {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+.footer-nav a:hover { color: var(--gold); }
+
+.footer-social h4 {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 16px;
+}
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+.social-link:hover { color: var(--gold); }
+.social-link svg { width: 20px; height: 20px; }
+
+.footer-bottom {
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  text-align: center;
+}
+.footer-phrase {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+}
+
+/* ─── STICKY MOBILE CTA ─── */
+.sticky-cta {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 999;
+  padding: 12px 16px;
+  background: var(--gold-grad);
+  color: var(--black);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes rotate-slow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes rotate-slow2 {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+@keyframes btn-pulse-gold {
+  0%, 100% { box-shadow: 0 0 12px rgba(255,215,0,0.25); }
+  50% { box-shadow: 0 0 35px rgba(255,215,0,0.65), 0 0 70px rgba(255,215,0,0.15); }
+}
+@keyframes btn-shine {
+  0%   { left: -90%; }
+  60%  { left: 120%; }
+  100% { left: 120%; }
+}
+@keyframes btn-color-flow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes btn-outline-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,150,10,0); }
+  50% { box-shadow: 0 0 14px 2px rgba(201,150,10,0.35); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.orbit-1 { animation: rotate-slow 20s linear infinite; }
+.orbit-2 { animation: rotate-slow2 14s linear infinite; }
+.orbit-3 { animation: rotate-slow 30s linear infinite; }
+
+.hero-photo-wrap { animation: float 6s ease-in-out infinite; }
+
+/* ── ENHANCED BUTTON ANIMATIONS ── */
+.btn-gold {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(270deg, #C9960A, #FFD700, #fff176, #FFD700, #C9960A);
+  background-size: 300% 300%;
+  animation: btn-color-flow 3s ease infinite, btn-pulse-gold 3s ease-in-out infinite;
+}
+.btn-gold::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -90%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.45), transparent);
+  transform: skewX(-20deg);
+  animation: btn-shine 3s ease-in-out infinite;
+}
+.btn-gold:hover {
+  animation: none;
+  background: linear-gradient(135deg, #FFD700, #fff176, #FFD700);
+  box-shadow: 0 0 45px rgba(255,215,0,0.8), 0 8px 24px rgba(0,0,0,0.4);
+  transform: translateY(-3px);
+}
+
+.btn-outline {
+  animation: btn-outline-pulse 2.5s ease-in-out infinite;
+}
+.btn-outline:hover {
+  animation: none;
+  background: var(--gold-grad);
+  color: var(--black);
+  box-shadow: 0 0 20px rgba(255,215,0,0.4);
+}
+
+.btn-pink { transition: box-shadow 0.3s, transform 0.2s; }
+.btn-pink:hover { box-shadow: 0 0 25px rgba(232,0,111,0.6); transform: translateY(-2px); }
+.btn-blue { transition: box-shadow 0.3s, transform 0.2s; }
+.btn-blue:hover { box-shadow: 0 0 25px rgba(0,180,216,0.6); transform: translateY(-2px); }
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  nav { padding: 14px 20px; }
+  .nav-links, .nav-cta { display: none; }
+  .burger { display: flex; }
+
+  .hero { padding: 80px 20px 40px; }
+  .hero-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero-right { order: -1; }
+  .hero-photo-wrap { width: 280px; height: 340px; margin: 0 auto; }
+  .hero-pictos { justify-content: center; }
+  .hero-actions { justify-content: center; }
+
+  .who { padding: 60px 20px; }
+  .who-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 40px;
+  }
+  .who-photo-wrap { display: flex; justify-content: center; }
+  .who-photo { width: 220px; height: 220px; }
+  .who-pills { justify-content: center; }
+  .who-quote { text-align: left; }
+
+  .products { padding: 60px 20px; }
+  .products-grid {
+    grid-template-columns: 1fr;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  .cta-section { padding: 80px 20px; }
+  .cta-buttons { flex-direction: column; align-items: center; }
+
+  footer { padding: 40px 20px 80px; }
+  .footer-top { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+  .social-links { align-items: center; }
+
+  .sticky-cta { display: flex; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="images/logo.png" alt="NeuroVISIO">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">NeuroVISIO</span>
+      <span class="nav-logo-desc">образы с душой</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="photo.html">Нейрофотосессия</a></li>
+    <li><a href="illustrations.html">Иллюстрации</a></li>
+    <li><a href="mak.html">МАК-колоды</a></li>
+  </ul>
+  <a href="https://t.me/GusevaIrinaV" target="_blank" class="nav-links nav-cta" style="list-style:none;display:flex;">
+    <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+    Связаться
+  </a>
+  <div class="burger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <svg class="orbits-bg" viewBox="0 0 1400 800" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="700" cy="400" r="300" fill="none" stroke="rgba(201,150,10,1)" stroke-width="0.8"/>
+      <circle cx="700" cy="400" r="200" fill="none" stroke="rgba(201,150,10,1)" stroke-width="0.8"/>
+      <circle cx="700" cy="400" r="150" fill="none" stroke="rgba(0,180,216,1)" stroke-width="0.8"/>
+      <line x1="400" y1="400" x2="1000" y2="400" stroke="rgba(201,150,10,1)" stroke-width="0.5"/>
+      <line x1="700" y1="100" x2="700" y2="700" stroke="rgba(201,150,10,1)" stroke-width="0.5"/>
+    </svg>
+    <canvas id="goldPixels"></canvas>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-left fade-up">
+      <p class="hero-eyebrow">AI-visual · AI художник</p>
+      <h1 class="hero-title">
+        Создаю <span class="gold-text">образы</span>,<br>
+        которые видят тебя,<br>
+        создают <span class="gold-text">тебя</span>
+      </h1>
+      <p class="hero-subtitle">NeuroVISIO — место, где творчество встречается с нейросетями</p>
+      <div class="hero-pictos">
+        <span class="hero-picto">📸 50+ образов для AI фотосессии</span>
+        <span class="hero-picto">📚 Иллюстрации и обложки книг</span>
+        <span class="hero-picto">🃏 МАК-колоды</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#products" class="btn-gold">Смотреть работы ↓</a>
+        <a href="https://t.me/GusevaIrinaV" target="_blank" class="btn-tg">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+          Связаться
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-photo-wrap">
+        <img src="images/5296560086568341901__1_.jpg" alt="Ирина Гусева" class="hero-photo">
+        <svg class="orbit-svg" viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg">
+          <g class="orbit-1">
+            <ellipse cx="250" cy="300" rx="220" ry="280" fill="none" stroke="rgba(0,180,216,0.4)" stroke-width="1"/>
+          </g>
+          <g class="orbit-2">
+            <ellipse cx="250" cy="300" rx="180" ry="230" fill="none" stroke="rgba(201,150,10,0.35)" stroke-width="1"/>
+          </g>
+          <g class="orbit-3">
+            <ellipse cx="250" cy="300" rx="240" ry="150" fill="none" stroke="rgba(184,127,216,0.25)" stroke-width="1"/>
+          </g>
+          <!-- gold dots -->
+          <circle cx="470" cy="300" r="4" fill="rgba(255,215,0,0.8)"/>
+          <circle cx="30" cy="300" r="3" fill="rgba(255,215,0,0.6)"/>
+          <circle cx="250" cy="20" r="3" fill="rgba(0,180,216,0.8)"/>
+          <circle cx="250" cy="580" r="4" fill="rgba(232,0,111,0.7)"/>
+        </svg>
+        <div class="gold-particles"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO AM I -->
+<section class="who">
+  <div class="who-inner">
+    <div class="who-photo-wrap fade-up">
+      <img src="images/5364259804920546854.jpg" alt="Ирина" class="who-photo">
+      <div class="who-photo-ring"></div>
+      <div class="who-photo-ring2"></div>
+    </div>
+    <div class="who-right fade-up">
+      <p class="section-eyebrow">Об авторе</p>
+      <h2 class="section-title">
+        Я вижу твой <span class="gold-text">внутренний свет</span>
+      </h2>
+      <p class="who-text">
+        Я не даю шаблоны — я создаю уникальные образы. За каждой AI фотосессией, иллюстрацией книги и МАК-колодой стоит понимание человека: кто он, как хочет выглядеть в глазах своей аудитории и клиентов, что хочет показать и какие ценности принести. Именно поэтому мои образы не просто красивые — они цепляют.
+      </p>
+      <div class="who-pills">
+        <span class="pill"><span class="pill-icon">🧠</span> Психология образа</span>
+        <span class="pill"><span class="pill-icon">🎨</span> AI-иллюстрация</span>
+        <span class="pill"><span class="pill-icon">🃏</span> МАК-практика</span>
+      </div>
+      <blockquote class="who-quote">
+        <span class="gold-text">Не шаблонное фото — создадим твой уникальный образ</span>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="section-divider fade-up">
+    <span class="divider-icon">✦</span>
+  </div>
+  <br>
+  <div class="section-header fade-up">
+    <p class="section-eyebrow">Продукты</p>
+    <h2 class="section-title">Три способа стать <span class="gold-text">видимой</span></h2>
+    <p class="section-sub">Выбери свой формат — от идеи до результата пару кликов</p>
+  </div>
+
+  <div class="products-grid">
+    <!-- Card 1 -->
+    <a href="photo.html" class="product-card fade-up">
+      <img src="images/5238110258889166513.jpg" alt="Нейрофотосессия" class="card-image">
+      <div class="card-body">
+        <span class="card-tag tag-blue">📸 Нейрофотосессия</span>
+        <h3 class="card-title">Образ, который работает на твой бизнес</h3>
+        <p class="card-quote">«Тебе не нужен фотограф. Нужно, чтобы тебя увидели.»</p>
+        <span class="btn-outline">Узнать подробнее →</span>
+      </div>
+    </a>
+
+    <!-- Card 2 -->
+    <a href="illustrations.html" class="product-card fade-up">
+      <img src="images/5285466980607982031.jpg" alt="Иллюстрации" class="card-image">
+      <div class="card-body">
+        <span class="card-tag tag-pink">📚 Иллюстрации для книг</span>
+        <h3 class="card-title">Персонаж, который остаётся собой от первой до последней страницы</h3>
+        <p class="card-quote">«Ваша история заслуживает образов, которые дети захотят рассматривать часами.»</p>
+        <span class="btn-outline">Узнать подробнее →</span>
+      </div>
+    </a>
+
+    <!-- Card 3 -->
+    <a href="mak.html" class="product-card fade-up">
+      <img src="images/5390916910285193249.jpg" alt="МАК-колоды" class="card-image">
+      <div class="card-body">
+        <span class="card-tag tag-lilac">🃏 МАК-колоды</span>
+        <h3 class="card-title">У тысяч психологов — одни и те же колоды. У тебя будет <span class="gold-text">своя</span>.</h3>
+        <p class="card-quote">«Создаю не красивые картинки — а образы, которые вскрывают глубину.»</p>
+        <span class="btn-outline">Узнать подробнее →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <svg class="cta-atom" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="300" cy="300" r="250" fill="none" stroke="rgba(201,150,10,1)" stroke-width="1"/>
+    <ellipse cx="300" cy="300" rx="250" ry="100" fill="none" stroke="rgba(201,150,10,1)" stroke-width="1" transform="rotate(60 300 300)"/>
+    <ellipse cx="300" cy="300" rx="250" ry="100" fill="none" stroke="rgba(0,180,216,1)" stroke-width="1" transform="rotate(120 300 300)"/>
+    <circle cx="300" cy="300" r="20" fill="rgba(232,0,111,0.5)"/>
+  </svg>
+
+  <div class="cta-content fade-up">
+    <h2 class="cta-title">
+      Твой образ уже существует.<br>
+      Он просто ждёт, чтобы его <span class="gold-text">увидели</span>.
+    </h2>
+    <p class="cta-sub">Напиши мне — и за 3 минуты мы поймём, какой формат подходит именно тебе.</p>
+    <div class="cta-buttons">
+      <a href="photo.html" class="btn-pink">📸 Нейрофотосессия</a>
+      <a href="illustrations.html" class="btn-blue">📚 Иллюстрации</a>
+      <a href="mak.html" class="btn-gold">🃏 МАК-колода</a>
+    </div>
+    <p class="cta-micro">
+      <a href="https://t.me/GusevaIrinaV" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+        Или просто напишите "Привет" — расскажу, с чего начать
+      </a>
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-watermark">
+    <img src="images/logo.png" alt="">
+  </div>
+  <div class="footer-inner">
+    <div class="section-divider" style="margin-bottom:40px;">
+      <span class="divider-icon">✦</span>
+    </div>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="NeuroVISIO">
+        <p class="footer-tagline">образы с душой</p>
+        <p class="footer-copy">© NeuroVISIO 2026</p>
+      </div>
+      <div class="footer-nav">
+        <h4>Продукты</h4>
+        <ul>
+          <li><a href="photo.html">📸 Нейрофотосессия</a></li>
+          <li><a href="illustrations.html">📚 Иллюстрации для книг</a></li>
+          <li><a href="mak.html">🃏 МАК-колоды</a></li>
+          <li><a href="https://t.me/NeuroVisionArtStudio" target="_blank">Telegram-канал</a></li>
+        </ul>
+      </div>
+      <div class="footer-social">
+        <h4>Связаться</h4>
+        <div class="social-links">
+          <a href="https://t.me/GusevaIrinaV" target="_blank" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+            @GusevaIrinaV
+          </a>
+          <a href="https://t.me/NeuroVisionArtStudio" target="_blank" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+            Канал NeuroVisionArtStudio
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-phrase"><span class="gold-text">«Создаю образы, которые видят тебя, создают тебя»</span></p>
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE STICKY -->
+<a href="https://t.me/GusevaIrinaV" target="_blank" class="sticky-cta">
+  <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+  Связаться с Ириной
+</a>
+
+<script>
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(el => {
+    if (el.isIntersecting) {
+      el.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Mobile menu
+function toggleMenu() {
+  const links = document.querySelector('.nav-links');
+  if (links) {
+    links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+    links.style.flexDirection = 'column';
+    links.style.position = 'absolute';
+    links.style.top = '70px';
+    links.style.left = '0';
+    links.style.right = '0';
+    links.style.background = 'rgba(10,10,18,0.98)';
+    links.style.padding = '20px';
+    links.style.gap = '16px';
+  }
+}
+
+// Smooth anchor scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// ── GOLD PIXELS CANVAS ANIMATION ──
+(function() {
+  const canvas = document.getElementById('goldPixels');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const COLORS = [
+    'rgba(255,215,0,',
+    'rgba(201,150,10,',
+    'rgba(255,235,100,',
+    'rgba(0,180,216,',
+    'rgba(180,127,216,',
+  ];
+
+  const particles = [];
+  const COUNT = 80;
+
+  function randomParticle() {
+    return {
+      x: Math.random() * canvas.width,
+      y: canvas.height + Math.random() * 100,
+      size: Math.random() * 2.5 + 0.5,
+      speedY: -(Math.random() * 0.6 + 0.2),
+      speedX: (Math.random() - 0.5) * 0.4,
+      opacity: 0,
+      maxOpacity: Math.random() * 0.55 + 0.1,
+      fadeIn: Math.random() * 0.015 + 0.005,
+      fadeOut: Math.random() * 0.008 + 0.003,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      // wave parameters
+      waveAmp: Math.random() * 18 + 4,
+      waveFreq: Math.random() * 0.02 + 0.005,
+      waveOffset: Math.random() * Math.PI * 2,
+      phase: 0,
+      born: false,
+      dying: false,
+    };
+  }
+
+  for (let i = 0; i < COUNT; i++) {
+    const p = randomParticle();
+    p.y = Math.random() * canvas.height; // start scattered
+    p.opacity = Math.random() * p.maxOpacity;
+    particles.push(p);
+  }
+
+  let t = 0;
+
+  function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    t++;
+
+    particles.forEach((p, i) => {
+      p.phase += p.waveFreq;
+      p.x += p.speedX + Math.sin(p.phase + p.waveOffset) * 0.35;
+      p.y += p.speedY;
+
+      if (!p.dying && p.opacity < p.maxOpacity) {
+        p.opacity = Math.min(p.opacity + p.fadeIn, p.maxOpacity);
+      }
+
+      // Start dying when near top or out of bounds
+      if (p.y < canvas.height * 0.15 || p.x < -10 || p.x > canvas.width + 10) {
+        p.dying = true;
+      }
+
+      if (p.dying) {
+        p.opacity -= p.fadeOut;
+      }
+
+      if (p.opacity <= 0) {
+        // Respawn at bottom
+        Object.assign(p, randomParticle());
+      }
+
+      // Draw square pixel
+      ctx.fillStyle = p.color + p.opacity + ')';
+      ctx.fillRect(Math.round(p.x), Math.round(p.y), p.size, p.size);
+    });
+
+    requestAnimationFrame(tick);
+  }
+
+  tick();
+})();
+</script>
+</body>
+</html>
